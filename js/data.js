@@ -21,7 +21,7 @@ window.SITE_DATA = {
     email: "793334508@qq.com",
     phone: "18650615526",
     // 留空表示尚未上传简历，按钮显示「简历待上传」
-    resumePath: "",
+    resumePath: "assets/docs/resume.pdf",
     // 留空时使用内置头像占位
     avatarPath: "assets/images/avatar.jpg",
   },
@@ -262,6 +262,26 @@ window.SITE_DATA = {
       video: "assets/videos/Snake.mp4",
       liveUrl: "https://hongxinyishidameinv.github.io/snake-game/",
       liveLabel: "网页演示",
+    },
+    {
+      title: "基于 Unity3D 的固体废物分选数字孪生系统",
+      time: "2025.10 — 2026.01",
+      summary: "围绕实际固体废物分选流程，构建集设备模型、作业场景与动态仿真于一体的三维数字孪生系统。将垃圾输送、分类与分选过程转化为直观的可视化演示，为流程分析、教学展示及数字化管理提供仿真平台。",
+      features: [
+        "分选场景构建：整合分选设备、垃圾对象与作业环境，还原实际分选流程中的设备布局与场景关系。",
+        "作业流程仿真：实现垃圾输送、分类与分选过程的动态演示，呈现各作业环节之间的衔接。",
+        "三维可视化展示：将设备结构与分选流程结合，让抽象的作业过程能够通过三维场景直观呈现。",
+      ],
+      developmentTitle: "开发与实现",
+      development: "使用 SolidWorks 完成分选设备及机械结构建模，结合 Blender 进行场景适配与可视化处理，再导入 Unity3D 搭建虚拟分选环境。围绕实际作业流程组织模型与场景，将设备结构、对象运动与流程演示连接起来，完成从三维建模到动态仿真的整合。",
+      tags: ["Unity3D", "SolidWorks", "Blender", "三维建模", "流程仿真"],
+      image: "assets/images/WS3D.png",
+      video: "assets/videos/WS3D.mp4",
+      videoCover: "",
+      mediaType: "landscape",
+      showAction: false,
+      liveLabel: "",
+      liveUrl: "",
     },
   ],
 

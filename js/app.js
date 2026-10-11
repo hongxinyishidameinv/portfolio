@@ -169,8 +169,9 @@
     const resumeBtn = document.getElementById("resumeBtn");
     if (p.resumePath) {
       resumeBtn.href = p.resumePath;
-      resumeBtn.setAttribute("download", "");
-      resumeBtn.textContent = "下载简历";
+      resumeBtn.setAttribute("download", `${p.name}-个人简历.pdf`);
+      resumeBtn.removeAttribute("target");
+      resumeBtn.innerHTML = `<svg class="resume-download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M5 16v4h14v-4"/></svg><span>下载简历</span>`;
       resumeBtn.removeAttribute("disabled");
       resumeBtn.setAttribute("aria-disabled", "false");
     } else {
@@ -349,7 +350,7 @@
       : "";
 
     const coverInner = hasVideo
-      ? `<span class="cover-hint">悬停播放演示</span>`
+      ? `<span class="cover-hint">悬停播放 · 点击放大</span>`
       : `<span class="cover-placeholder">${portrait ? "竖屏演示视频待上传" : "演示视频待上传"}</span>`;
 
     let videoHtml = "";
@@ -361,7 +362,7 @@
     const liveLabel = proj.liveLabel || "在线体验";
     const liveBtn = proj.liveUrl
       ? `<a class="btn btn-primary" href="${escapeHtml(proj.liveUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(liveLabel)}<span class="project-link-arrow" aria-hidden="true"></span></a>`
-      : `<button class="btn btn-primary" type="button" disabled aria-disabled="true">体验链接待添加</button>`;
+      : `<button class="btn btn-primary" type="button" disabled aria-disabled="true">${escapeHtml(proj.liveLabel || "体验链接待添加")}</button>`;
 
     return `<div class="project-card-entry"><article class="project-card">
       <header class="project-header">
@@ -399,7 +400,7 @@
           <div class="project-tags">
             ${(proj.tags || []).map((t) => `<span class="tag">${escapeHtml(t)}</span>`).join("")}
           </div>
-          <div class="project-footer">${liveBtn}</div>
+          ${proj.showAction === false ? "" : `<div class="project-footer">${liveBtn}</div>`}
           ${proj.demoNote ? `<p class="project-demo-note">${escapeHtml(proj.demoNote)}</p>` : ""}
         </div>
       </div>
@@ -504,6 +505,60 @@
 
       let isActive = false; // 是否处于"需要播放"的状态（鼠标悬停或触屏点了播放）
       let errorTimer = null;
+      let previewDialog = null;
+
+      container.tabIndex = 0;
+      container.setAttribute("role", "button");
+      container.setAttribute("aria-label", `放大观看${proj.title}演示视频`);
+      container.setAttribute("aria-haspopup", "dialog");
+
+      function openPreview() {
+        if (previewDialog) return;
+        stop();
+        stopAllVideos();
+        const dialog = document.createElement("dialog");
+        dialog.className = "proof-dialog video-dialog";
+        dialog.setAttribute("aria-label", `${proj.title}演示视频`);
+        const close = document.createElement("button");
+        close.type = "button";
+        close.className = "btn proof-close";
+        close.textContent = "关闭";
+        const player = document.createElement("video");
+        player.controls = true;
+        player.playsInline = true;
+        player.muted = true;
+        player.src = proj.video;
+        if (proj.videoCover) player.poster = proj.videoCover;
+        close.addEventListener("click", () => dialog.close());
+        dialog.addEventListener("click", (event) => {
+          const bounds = dialog.getBoundingClientRect();
+          if (event.target === dialog && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom)) dialog.close();
+        });
+        dialog.addEventListener("close", () => {
+          player.pause();
+          player.removeAttribute("src");
+          player.load();
+          dialog.remove();
+          previewDialog = null;
+          container.focus({ preventScroll: true });
+        });
+        dialog.append(close, player);
+        document.body.appendChild(dialog);
+        previewDialog = dialog;
+        dialog.showModal();
+        close.focus();
+        player.play().catch((error) => {
+          console.warn("放大视频播放未开始，请使用播放器播放按钮", error);
+        });
+      }
+
+      container.addEventListener("click", openPreview);
+      container.addEventListener("keydown", (event) => {
+        if (event.target === container && (event.key === "Enter" || event.key === " ")) {
+          event.preventDefault();
+          openPreview();
+        }
+      });
 
       function showCover() {
         cover.style.display = "flex";
@@ -511,7 +566,28 @@
       function hideCover() {
         cover.style.display = "none";
       }
-      function showError() {
+      function showError(exception) {
+        const mediaError = video.error;
+        const descriptions = {
+          1: "视频加载已中止",
+          2: "视频加载失败（网络或传输问题）",
+          3: "视频解码失败",
+          4: "视频源无法加载或格式不受支持（请检查文件地址及HTTP响应）",
+        };
+        let message = descriptions[mediaError?.code] || "视频播放失败";
+        if (exception?.name === "NotAllowedError") message = "浏览器阻止自动播放，请点击播放按钮";
+        if (exception?.name === "AbortError") message = "播放请求已中止";
+        errorEl.textContent = message;
+        console.error("项目视频播放诊断", {
+          project: proj.title,
+          url: video.currentSrc || video.src,
+          mediaErrorCode: mediaError?.code ?? null,
+          mediaErrorMessage: mediaError?.message ?? null,
+          exceptionName: exception?.name ?? null,
+          exceptionMessage: exception?.message ?? null,
+          readyState: video.readyState,
+          networkState: video.networkState,
+        });
         errorEl.style.display = "block";
         if (errorTimer) clearTimeout(errorTimer);
         errorTimer = setTimeout(() => {
@@ -539,6 +615,7 @@
 
       // 尝试播放
       function play() {
+        if (previewDialog || document.querySelector("dialog[open]")) return;
         isActive = true;
         ensureSource();
         // 从头开始
@@ -559,10 +636,10 @@
               } catch (e) {}
               showCover();
             }
-          }).catch(() => {
+          }).catch((error) => {
             // 浏览器拒绝播放（如未交互、自动播放策略）
             if (isActive) {
-              showError();
+              showError(error);
               showCover();
             }
           });
@@ -604,6 +681,10 @@
       // 视频自然结束时恢复封面（非循环场景，虽然设了 loop，此处作为兜底）
       video.addEventListener("ended", () => {
         if (!isActive) showCover();
+      });
+      video.addEventListener("error", () => {
+        showError();
+        showCover();
       });
     });
   }

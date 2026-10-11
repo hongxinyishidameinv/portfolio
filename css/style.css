@@ -311,6 +311,31 @@ html {
   cursor: not-allowed;
 }
 
+.resume-download:not([disabled]) {
+  gap: 10px;
+  padding: 11px 20px;
+  border-radius: 10px;
+  border-color: rgba(34, 211, 238, 0.4);
+  background-color: rgba(34, 211, 238, 0.08);
+  color: var(--color-accent);
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.resume-download-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .resume-download:hover:not([disabled]) {
+    background-color: rgba(34, 211, 238, 0.14);
+    border-color: rgba(34, 211, 238, 0.75);
+    box-shadow: 0 0 14px rgba(34, 211, 238, 0.12);
+  }
+}
+
 .btn-ghost {
   background-color: transparent;
   color: var(--color-accent);
@@ -1197,6 +1222,32 @@ button.project-image {
   max-height: calc(100dvh - 120px);
   margin: auto;
   object-fit: contain;
+}
+
+.project-video[role="button"] {
+  cursor: pointer;
+}
+
+.project-video:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -3px;
+}
+
+.video-dialog {
+  width: fit-content;
+  max-width: min(820px, calc(100vw - 32px));
+  max-height: calc(100dvh - 48px);
+}
+
+.video-dialog video {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(786px, calc(100vw - 66px));
+  max-height: min(560px, calc(100dvh - 150px));
+  margin: auto;
+  object-fit: contain;
+  background: #000;
 }
 
 /* ===================== 响应式 ===================== */
