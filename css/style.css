@@ -168,8 +168,54 @@ html {
 }
 
 .profile-info {
-  flex: 1 1 240px;
+  flex: 0 1 auto;
   min-width: 0;
+}
+
+.profile-typing {
+  display: flex;
+  flex: 1 0 220px;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  color: #94A3B8;
+  font-family: "SimSun", "宋体", serif;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  line-height: 1.5;
+}
+
+.profile-typing-slot {
+  display: inline-block;
+  width: 9em;
+  max-width: 100%;
+  min-height: 1.5em;
+  white-space: nowrap;
+}
+
+.profile-typing-cursor {
+  display: inline-block;
+  width: 1px;
+  height: 1em;
+  margin-left: 5px;
+  vertical-align: -0.1em;
+  background: #22D3EE;
+  animation: typing-cursor 1.6s ease-in-out infinite;
+}
+
+@keyframes typing-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.15; }
+}
+
+@media (max-width: 1100px) {
+  .profile-info { flex: 1 1 240px; }
+  .profile-typing { order: 3; flex-basis: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-typing-cursor { animation: none; }
 }
 
 /* 姓名专用字体：得意黑 Smiley Sans（OFL 开源协议，已子集化仅含姓名字符，约 1KB） */
@@ -1298,6 +1344,7 @@ button.project-image {
 
   .profile-actions {
     width: 100%;
+    order: 4;
   }
 
   .layout {
