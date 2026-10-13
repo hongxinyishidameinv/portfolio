@@ -1,7 +1,7 @@
 /* =========================================================
  * 个人网站交互逻辑
  * 负责：渲染个人名片、导航切换、各栏目内容渲染、
- *       项目视频悬停播放 / 触屏控制、简历下载等。
+ *       项目视频悬停播放 / 触屏控制等。
  * ========================================================= */
 
 (function () {
@@ -165,22 +165,6 @@
       avatar.replaceChildren();
     }
 
-    // 简历下载
-    const resumeBtn = document.getElementById("resumeBtn");
-    if (p.resumePath) {
-      resumeBtn.href = p.resumePath;
-      resumeBtn.setAttribute("download", `${p.name}-个人简历.pdf`);
-      resumeBtn.removeAttribute("target");
-      resumeBtn.innerHTML = `<svg class="resume-download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M5 16v4h14v-4"/></svg><span>下载简历</span>`;
-      resumeBtn.removeAttribute("disabled");
-      resumeBtn.setAttribute("aria-disabled", "false");
-    } else {
-      resumeBtn.removeAttribute("href");
-      resumeBtn.removeAttribute("download");
-      resumeBtn.textContent = "简历待上传";
-      resumeBtn.setAttribute("disabled", "true");
-      resumeBtn.setAttribute("aria-disabled", "true");
-    }
   }
 
   /* ---------- 渲染导航 ---------- */

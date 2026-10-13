@@ -289,11 +289,6 @@ html {
   overflow-wrap: anywhere;
 }
 
-.profile-actions {
-  display: flex;
-  gap: 10px;
-  flex-shrink: 0;
-}
 
 /* 首屏加载入场动画 */
 @keyframes rise-in {
@@ -357,30 +352,8 @@ html {
   cursor: not-allowed;
 }
 
-.resume-download:not([disabled]) {
-  gap: 10px;
-  padding: 11px 20px;
-  border-radius: 10px;
-  border-color: rgba(34, 211, 238, 0.4);
-  background-color: rgba(34, 211, 238, 0.08);
-  color: var(--color-accent);
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-}
 
-.resume-download-icon {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-}
 
-@media (hover: hover) and (pointer: fine) {
-  .resume-download:hover:not([disabled]) {
-    background-color: rgba(34, 211, 238, 0.14);
-    border-color: rgba(34, 211, 238, 0.75);
-    box-shadow: 0 0 14px rgba(34, 211, 238, 0.12);
-  }
-}
 
 .btn-ghost {
   background-color: transparent;
@@ -1342,11 +1315,7 @@ button.project-image {
     font-size: var(--font-meta);
   }
 
-  .profile-actions {
-    width: 100%;
-    order: 4;
-  }
-
+  
   .layout {
     flex-direction: column;
     gap: 16px;

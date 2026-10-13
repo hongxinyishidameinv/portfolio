@@ -3,7 +3,6 @@
  * 修改本文件即可更新个人信息、经历、项目、技能等所有内容。
  * 路径说明：
  *   - 头像：  assets/images/avatar.jpg
- *   - 简历：  assets/docs/resume.pdf
  *   - 项目封面：assets/images/project-1.jpg 等
  *   - 项目视频：assets/videos/project-1.mp4 等
  * 没有素材时，将对应字段留空字符串 "" 即可，页面会显示占位状态。
@@ -20,8 +19,6 @@ window.SITE_DATA = {
     political: "中共党员",
     email: "793334508@qq.com",
     phone: "18650615526",
-    // 留空表示尚未上传简历，按钮显示「简历待上传」
-    resumePath: "assets/docs/resume.pdf",
     // 留空时使用内置头像占位
     avatarPath: "assets/images/avatar.jpg",
   },
