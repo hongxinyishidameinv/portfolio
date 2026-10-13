@@ -22,7 +22,7 @@
     } else if (deleting && count === 0) {
       deleting = false;
       phrase = (phrase + 1) % phrases.length;
-      delay = 400;
+      delay = 90;
     }
     timer = setTimeout(step, delay);
   }
