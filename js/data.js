@@ -298,8 +298,8 @@ window.SITE_DATA = {
       {
         category: "EI会议论文",
         name: "Digital Twin Design and Implementation of a Solid Waste Sorting System Based on Unity3D",
-        status: "已见刊", time: "2026.09.17", timeLabel: "见刊日期",
-        details: [{ label: "署名", value: "第一作者" }, { label: "会议", value: "SECA 2026" }], proof: null,
+        status: "已见刊 · 已被 EI Compendex 收录", time: "2026.09.17", timeLabel: "见刊日期",
+        details: [{ label: "署名", value: "第一作者" }, { label: "会议", value: "SECA 2026" }, { label: "索引号", value: "20264021596736" }], proof: null,
       },
       {
         category: "发明专利",
